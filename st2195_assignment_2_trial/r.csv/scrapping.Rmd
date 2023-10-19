@@ -1,0 +1,40 @@
+---
+title: "Assignment_2"
+author: "Kelvin"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+### Load the library Install the 'rvest' package if it is not yet installed
+
+```{r}
+    install.packages("rvest")
+    library(rvest)
+```
+
+``` {r}
+### get the csv example
+webpage_html <- read_html("https://en.wikipedia.org/wiki/Comma-separated_values")
+```
+
+# Get the csv examples under 
+```{r}
+cvs_tables <- webpage_html %>% html_nodes(xpath = '//h2[contains(.,"Example")]//following-sibling:: pre') %>% html_text()
+
+cvs_tables
+```
+
+```{r}
+csv_table <- cvs_tables[1]
+```
+
+### save the csv example into a csv file
+```{r}
+write.table(csv_table, file = "car.csv", quote = FALSE, col.names = FALSE, row.name = FALSE)
+```
+
+### reload the csv data from the file to make sure the data was saved properly
+```{r}
+car_df <- read.csv("car.csv")
+car_df
+```
